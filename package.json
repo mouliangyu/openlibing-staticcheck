@@ -11,7 +11,7 @@
     "src/"
   ],
   "bin": {
-    "olb": "./bin/olb.js"
+    "openlibing-staticcheck": "./bin/openlibing-staticcheck.js"
   },
   "publishConfig": {
     "access": "public"

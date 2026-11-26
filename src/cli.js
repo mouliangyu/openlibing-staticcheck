@@ -53,7 +53,7 @@ async function browserSession(url, profile, command) {
   } catch (error) {
     if (error.message.includes("Executable doesn't exist")) throw new Error('未找到浏览器，请运行 npx playwright install chromium，或设置 OLB_BROWSER_PATH 指向本机 Chromium');
     if (error.message.includes('error while loading shared libraries')) throw new Error('浏览器缺少系统库，请运行 npx playwright install-deps chromium，或使用已安装的本机 Chromium');
-    if (error.message.includes('Missing X server') || error.message.includes('no DISPLAY')) throw new Error('当前终端没有图形桌面，请在有桌面环境的终端运行 olb login');
+    if (error.message.includes('Missing X server') || error.message.includes('no DISPLAY')) throw new Error('当前终端没有图形桌面，请在有桌面环境的终端运行 openlibing-staticcheck login');
     throw error;
   }
   try {
@@ -168,7 +168,7 @@ export async function main(argv) {
   }
   if (command === 'status') {
     console.log(await hasProfile(profile) ? `本机会话目录已存在：${profile}
-是否仍已登录，请运行 olb open 或 olb check 确认。` : `尚无本机会话：${profile}`);
+是否仍已登录，请运行 openlibing-staticcheck open 或 openlibing-staticcheck check 确认。` : `尚无本机会话：${profile}`);
     return;
   }
   if (command === 'logout') {
@@ -176,7 +176,7 @@ export async function main(argv) {
     console.log(`已删除本机会话：${profile}`);
     return;
   }
-  if (command === 'open' && !(await hasProfile(profile))) throw new Error('尚无本机会话，请先运行 olb login');
+  if (command === 'open' && !(await hasProfile(profile))) throw new Error('尚无本机会话，请先运行 openlibing-staticcheck login');
   const session = await browserSession(targetUrl(options.url), profile, command);
   if (command === 'login') await saveSession(sessionFile, session);
 }

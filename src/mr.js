@@ -45,7 +45,7 @@ export function mrFromPrView(number, view) {
 }
 
 async function resolveMr(value) {
-  if (!/^\d+$/.test(value)) throw new Error('请在已配置 GitCode 远端的仓库中提供 MR 编号，例如：olb mr report 531');
+  if (!/^\d+$/.test(value)) throw new Error('请在已配置 GitCode 远端的仓库中提供 MR 编号，例如：openlibing-staticcheck mr report 531');
   const view = await gcJson(['pr', 'view', value, '--json']);
   return mrFromPrView(value, view);
 }
@@ -108,7 +108,7 @@ async function gateReportLinks(mr, timing) {
     catch { continue; }
     finally { timing?.add('门禁流水线详情', performance.now() - started); }
     for (const job of codecheckJobs(detail)) {
-      const dir = await mkdtemp(join(tmpdir(), 'olb-codecheck-'));
+      const dir = await mkdtemp(join(tmpdir(), 'openlibing-staticcheck-codecheck-'));
       started = performance.now();
       try {
         const archive = join(dir, 'job.zip');
@@ -250,7 +250,7 @@ export async function mrCommand(argv) {
     return;
   }
   if (!['report', 'shield'].includes(action) || !mrNumber) {
-    throw new Error('用法：olb mr report <MR 编号> [--project-id 项目ID] [--task-id 扫描ID]；olb mr shield <MR 编号> --task-id 扫描ID --lines 行号,行号 --reviewer 用户名 --reason 理由 --shield-type 类别ID [--project-id 项目ID]');
+    throw new Error('用法：openlibing-staticcheck mr report <MR 编号> [--project-id 项目ID] [--task-id 扫描ID]；openlibing-staticcheck mr shield <MR 编号> --task-id 扫描ID --lines 行号,行号 --reviewer 用户名 --reason 理由 --shield-type 类别ID [--project-id 项目ID]');
   }
   const opt = options(rest);
   if (action === 'report' && ['lines', 'reviewer', 'reason', 'shield-type'].some(key => key in opt))
@@ -258,8 +258,8 @@ export async function mrCommand(argv) {
   if (action === 'shield' && opt.timing) throw new Error('--timing 只适用于 report');
   if (action === 'shield') {
     if (!opt.lines || !opt.reviewer || !opt.reason || !opt['task-id'] || !opt['shield-type'])
-      throw new Error('屏蔽需要 --task-id、--lines、--reviewer、--reason 和 --shield-type；类别见 olb mr shield --help');
-    if (!/^[0-8]$/.test(opt['shield-type'])) throw new Error('--shield-type 必须是 0 到 8 的类别 ID；类别见 olb mr shield --help');
+      throw new Error('屏蔽需要 --task-id、--lines、--reviewer、--reason 和 --shield-type；类别见 openlibing-staticcheck mr shield --help');
+    if (!/^[0-8]$/.test(opt['shield-type'])) throw new Error('--shield-type 必须是 0 到 8 的类别 ID；类别见 openlibing-staticcheck mr shield --help');
   }
   const startedAt = performance.now();
   const durations = new Map();
@@ -316,7 +316,7 @@ export async function mrCommand(argv) {
   const open = await issues(request, target, projectId, '0');
   const selected = open.filter(x => lines.has(String(x.lineNumber)));
   if (selected.length !== lines.size || new Set(selected.map(x => String(x.lineNumber))).size !== lines.size)
-    throw new Error('行号未唯一匹配待处理问题；请先运行 olb mr report 核对');
+    throw new Error('行号未唯一匹配待处理问题；请先运行 openlibing-staticcheck mr report 核对');
   if (selected.some(x => x.defectStatus !== '0')) throw new Error('所选问题已有处理状态，不能重复申请屏蔽');
   const candidate = await request(`${FRAMEWORK}/select/get-committer`, {
     projectId: Number(projectId), repoId: target.repoId, productId: 0,
