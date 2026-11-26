@@ -1,4 +1,4 @@
-# openLiBing CLI
+# openlibing-staticcheck
 
 `olb mr` 查询 GitCode MR 的 OpenLiBing 静态检查报告及失败问题，也能申请屏蔽。先看命令帮助：
 
@@ -24,7 +24,7 @@ olb mr report 531
 要求 Node.js 20+。发布到 npm 后可安装：
 
 ```sh
-npm install -g olb
+npm install -g openlibing-staticcheck
 ```
 
 从本地源码安装：

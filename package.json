@@ -1,5 +1,5 @@
 {
-  "name": "olb",
+  "name": "openlibing-staticcheck",
   "version": "0.1.0",
   "description": "OpenLiBing CLI for GitCode MR static check reports and shield requests",
   "type": "module",
