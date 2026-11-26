@@ -1,0 +1,25 @@
+{
+  "name": "olb",
+  "version": "0.1.0",
+  "description": "OpenLiBing CLI for GitCode MR static check reports and shield requests",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin/",
+    "src/"
+  ],
+  "bin": {
+    "olb": "./bin/olb.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "playwright": "^1.65.1"
+  }
+}
